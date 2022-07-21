@@ -37,7 +37,7 @@ class Catalog(models.Model):
 
 class Price(models.Model):
     prod_name = models.ForeignKey(Catalog, on_delete=models.CASCADE, related_name='price')
-    price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=2)
+    price = models.DecimalField(verbose_name='Цена', max_digits=10, decimal_places=0)
     discount = models.PositiveSmallIntegerField(verbose_name='Скидка', default=0)
     date = models.DateField(auto_now=True)
 
