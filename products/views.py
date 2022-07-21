@@ -10,6 +10,12 @@ class CatalogViews(ModelViewSet):
     serializer_class = CatalogSerializer
 
 
+# Hits
+class HitsViews(ModelViewSet):
+    queryset = Catalog.objects.all()
+    serializer_class = HitsSerializer
+
+
 # Advatages
 class AdvatagesViews(ModelViewSet):
     queryset = Advantages.objects.all()

@@ -46,6 +46,9 @@ class CatalogSerializer(serializers.ModelSerializer):
             represent['old price'] = price['price']
             represent['discount'] = price['discount']
             represent['new price'] = str((int(price['price']) - round(int(price['price']) * (price['discount'] / 100))))[:-1] + '0'
+        else:
+            price = dict(PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data[0])
+            represent['old price'] = price['price']
         represent['size'] = SizeSerializer(instance.size.all(), many=True).data
         represent['images'] = [dict(i)['images'] for i in(ImagesSerializer(instance.images.filter(prod_name=instance.id), many=True).data)]
         represent['tags'] = TagsSerializer(instance.tags.all(), many=True).data
@@ -96,3 +99,24 @@ class ProfitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profit
         fields = ('img', 'title', 'body')
+
+
+# Hits
+class HitsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Catalog
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        represent = super().to_representation(instance)
+        represent['old price'] = PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data
+        if dict(represent['old price'][0])['discount']:
+            price = dict(PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data[0])
+            represent['old price'] = price['price']
+            represent['discount'] = price['discount']
+            represent['new price'] = str((int(price['price']) - round(int(price['price']) * (price['discount'] / 100))))[:-1] + '0'
+        else:
+            price = dict(PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data[0])
+            represent['old price'] = price['price']
+        represent['size'] = SizeSerializer(instance.size.all(), many=True).data
+        return represent
