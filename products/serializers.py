@@ -39,7 +39,12 @@ class CatalogSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        rep['price'] = PriceSerializer(instance.price.all(), many=True).data
+        rep['old price'] = PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data
+        if dict(rep['old price'][0])['discount']:
+            price = dict(PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data[0])
+            rep['old price'] = price['price']
+            rep['discount'] = price['discount']
+            rep['new price'] = str(float(price['price']) - (float(price['price']) * (price['discount'] / 100)))
         rep['size'] = SizeSerializer(instance.size.all(), many=True).data
         rep['images'] = ImagesSerializer(instance.images.all(), many=True).data
         rep['tags'] = TagsSerializer(instance.tags.all(), many=True).data
