@@ -9,6 +9,8 @@ router.register('catalog', CatalogViews)
 router.register('advatages', AdvatagesViews)
 router.register('econom', EconomViews)
 router.register('furniture', FurnitureViews)
+router.register('pluses', PlusesViews)
+router.register('profit', ProfitViews)
 
 urlpatterns = []
 urlpatterns += router.urls # urlpatterns.extend(router.urls)

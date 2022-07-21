@@ -136,3 +136,32 @@ class FurnitureCategories(models.Model):
     class Meta:
         verbose_name = 'Фурнитур Категория'
         verbose_name_plural = 'Фурнитур Категории'
+
+
+
+# Pluses
+class Pluses(models.Model):
+    title = models.CharField(verbose_name='Плюс', max_length=155)
+    body = models.TextField(verbose_name='Текст')
+    img = models.ImageField(verbose_name='Фото', upload_to='pluses')
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Плюс компании'
+        verbose_name_plural = 'Плюсы компании'
+
+
+# Profit
+class Profit(models.Model):
+    title = models.CharField(verbose_name='Выгода', max_length=155)
+    body = models.TextField(verbose_name='Текст')
+    img = models.ImageField(verbose_name='Фото', upload_to='pluses')
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Выгода'
+        verbose_name_plural = 'Выгоды'

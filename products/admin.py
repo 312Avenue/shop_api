@@ -27,3 +27,9 @@ admin.site.register(Econom)
 # Furniture
 admin.site.register(Furniture)
 admin.site.register(FurnitureCategories)
+
+# Pluses
+admin.site.register(Pluses)
+
+# Profit
+admin.site.register(Profit)

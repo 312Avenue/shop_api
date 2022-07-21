@@ -82,3 +82,17 @@ class FurnitureSerializer(serializers.ModelSerializer):
         represent = super().to_representation(instance)
         represent['categoties'] = [dict(i)['name'] for i in FurnitureCategoriesSerializer(instance.categories.filter(furniture=instance.id), many=True).data]
         return represent
+
+
+# Pluses
+class PlusesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pluses
+        fields = ('img', 'title', 'body')
+
+
+# Profit
+class ProfitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profit
+        fields = ('img', 'title', 'body')

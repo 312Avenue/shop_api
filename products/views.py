@@ -26,3 +26,15 @@ class EconomViews(ModelViewSet):
 class FurnitureViews(ModelViewSet):
     queryset = Furniture.objects.all()
     serializer_class = FurnitureSerializer
+
+
+# Pluses
+class PlusesViews(ModelViewSet):
+    queryset = Pluses.objects.all()
+    serializer_class = PlusesSerializer
+
+
+# Profit
+class ProfitViews(ModelViewSet):
+    queryset = Profit.objects.all()
+    serializer_class = ProfitSerializer
