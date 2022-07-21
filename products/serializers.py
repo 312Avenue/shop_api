@@ -1,51 +1,84 @@
 from rest_framework import serializers
 
-from .models import Catalog, Size, Price, Tags, ProdType, Images
+from .models import *
 
+# Catalog
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Size
-        fields = ['width', 'deep', 'heigth']
+        fields = ('width', 'deep', 'heigth')
     
 
 class PriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Price
-        fields = ['price', 'discount']
+        fields = ('price', 'discount')
 
 
 class TagsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tags
-        fields = ['tags']
+        fields = ('tags',)
 
 
 class ProdTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProdType
-        fields = ['name']
+        fields = ('name',)
 
 
 class ImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
-        fields = ['images']
+        fields = ('images',)
 
 
 class CatalogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Catalog
-        fields = '__all__'
+        fields = "__all__"
 
     def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        rep['old price'] = PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data
-        if dict(rep['old price'][0])['discount']:
+        represent = super().to_representation(instance)
+        represent['old price'] = PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data
+        if dict(represent['old price'][0])['discount']:
             price = dict(PriceSerializer(instance.price.filter(prod_name=instance.id), many=True).data[0])
-            rep['old price'] = price['price']
-            rep['discount'] = price['discount']
-            rep['new price'] = str((int(price['price']) - round(int(price['price']) * (price['discount'] / 100))))[:-1] + '0'
-        rep['size'] = SizeSerializer(instance.size.all(), many=True).data
-        rep['images'] = ImagesSerializer(instance.images.all(), many=True).data
-        rep['tags'] = TagsSerializer(instance.tags.all(), many=True).data
-        return rep
+            represent['old price'] = price['price']
+            represent['discount'] = price['discount']
+            represent['new price'] = str((int(price['price']) - round(int(price['price']) * (price['discount'] / 100))))[:-1] + '0'
+        represent['size'] = SizeSerializer(instance.size.all(), many=True).data
+        represent['images'] = [dict(i)['images'] for i in(ImagesSerializer(instance.images.filter(prod_name=instance.id), many=True).data)]
+        represent['tags'] = TagsSerializer(instance.tags.all(), many=True).data
+        return represent
+
+
+# Advatages
+class AdvantagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advantages
+        fields = ('title', 'body')
+
+
+# Econom
+class EconomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Econom
+        fields = ('title', 'body')
+
+
+# Furniture
+class FurnitureCategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FurnitureCategories
+        fields = ('name',)
+
+
+class FurnitureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Furniture
+        fields = ('fur_type', 'img')
+
+    def to_representation(self, instance):
+        represent = super().to_representation(instance)
+        represent['categoties'] = [dict(i)['name'] for i in FurnitureCategoriesSerializer(instance.categories.filter(furniture=instance.id), many=True).data]
+        return represent

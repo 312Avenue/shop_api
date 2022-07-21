@@ -86,3 +86,53 @@ class Tags(models.Model):
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
 
+
+# Advantages
+class Advantages(models.Model):
+    title = models.CharField(verbose_name='Заголовок', max_length=155)
+    body = models.TextField(verbose_name='Текст')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Заголовок советы'
+        verbose_name_plural = 'Заголовки советы'
+
+
+# Econom
+class Econom(models.Model):
+    title = models.CharField(verbose_name='Заголовок', max_length=155)
+    body = models.TextField(verbose_name='Текст')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Заголовок экономь'
+        verbose_name_plural = 'Заголовки экономь'
+
+
+#Furniture
+class Furniture(models.Model):
+    fur_type = models.CharField(verbose_name='Тип фурнитуры', max_length=155)
+    img = models.ImageField(verbose_name='Фото', upload_to='icons')
+
+    def __str__(self):
+        return self.fur_type
+
+    class Meta:
+        verbose_name = 'Фурнитура'
+        verbose_name_plural = 'Фурнитуры'
+
+
+class FurnitureCategories(models.Model):
+    furniture = models.ForeignKey(Furniture, on_delete=models.CASCADE, related_name='categories')
+    name = models.CharField(verbose_name='Название', max_length=155)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Фурнитур Категория'
+        verbose_name_plural = 'Фурнитур Категории'
